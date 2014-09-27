@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<title>Simple Angular Example</title>
+	<script type="text/javascript" src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js'></script>
+
+	<style type="text/css">
+		
+		*{
+			font-family:arial;
+		}
+		.real{
+			color:#F0AD4E;
+		}
+
+		.banner{
+			text-align: center;
+			color:white;
+			background-color:#5C4383;
+		}
+		.container{
+			background-color:#F9F9F9;
+		}
+		
+		h4{
+			color:#5BC0DE;
+		}
+
+	</style>
+	
+	<script type="text/javascript">
+		var app = angular.module('myApp',[]) // ***only one module per page***
+		
+		//I can give data to various scopes by making factories
+		//factories are singleton functions, no matter how many times I call the factory, it waill reference the same factory
+		app.factory('libFactory', function(){
+			var factory = {}
+
+				factory.libs = []
+				
+				factory.addLib = function(){}
+				return factory;
+				
+		})
+		app.controller('libsController', function($scope, libFactory,$http){
+
+			$scope.libs = libFactory.libs
+			$scope.addLib = function(){
+				$scope.libs.push($scope.newLib);
+				$scope.newLib = " ";
+			}
+
+			$scope.delLib = function($index){
+				$scope.libs.splice($index,1)
+				// $http.get('',{}).success(function(){})
+			}
+
+
+		})
+		</script>
+	</head>
+	<body ng-app ='myApp'>
+		<div class='jumbotron banner'>
+			<h1>A Simple Angular Example</h1>
+		</div>
+
+		<div class='container' ng-controller='libsController'>
+			<div align='center'>
+				<h4>Below you will see your name display as its being typed, as well as real-time character count:</h4>
+				<h1>Your name is: <span class='real'>{{name}}</span></h1>
+				<h2>Your name is: <span class='real'>{{name.length}}</span> characters</h2>
+					<input type='text' ng-model='name' placeholder='name'> 
+			</div><br>		
+				<div align='center'>
+					<h4>Below you can add a lib on click:</h4>
+					<ul>
+					
+						<h2>Click "add" to add a lib</h2>
+							<li ng-repeat="lib in libs track by $index">name: <span class='real'>{{lib.name}}</span> || desc: <span class='real'>{{lib.desc}}</span>
+							<a href="#" ng-click = 'delLib($index)'><button class='btn btn-danger'>Delete</button></a></li>
+					
+					</ul>
+						<input type='text' ng-model='newLib.name' placeholder='name'>
+						<input type='text' ng-model='newLib.desc' placeholder='description'>
+					<!-- <input type='text' ng-model='newLib'> -->
+					<button class='btn btn-success' ng-click='addLib()'>add</button>
+				</div>
+			</div>
+
+		</body>
+		</html>
